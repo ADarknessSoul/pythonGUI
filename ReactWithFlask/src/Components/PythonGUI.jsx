@@ -20,6 +20,29 @@ export const PythonGUI = () => {
       const response = await axios.get("http://localhost:8080/api/getNumberOfPickles");
       setNumberOfPickles(parseInt(response.data.numero))
     }
+
+    const downloadFile = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/getFile', {
+          responseType: 'blob', // Set response type to blob to handle binary data
+        });
+    
+        // Create a blob URL from the response data
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+    
+        // Create a temporary link element to initiate the download
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'formato.txt'); // Set the filename
+        document.body.appendChild(link);
+        link.click();
+    
+        // Clean up
+        link.parentNode.removeChild(link);
+      } catch (error) {
+        console.error('Error downloading file:', error);
+      }
+    };
     
     useEffect(() => {
       fetchAPI();
@@ -92,7 +115,7 @@ export const PythonGUI = () => {
 
                     </div>
 
-                    <div className='col-6 d-flex flex-column gap-2'>
+                    <div className='col-6 d-flex flex-column gap-2 mb-2'>
                       
 
                       <button className='btn btn-warning' onClick={handleSubstract}>Anterior</button>
@@ -107,13 +130,13 @@ export const PythonGUI = () => {
 
                   </div>
 
-                  <div className='d-flex justify-content-center align-items-center mb-2'>
+                <textarea className='form-control mb-2' rows={27} disabled value={formato}></textarea>
 
-                    
+                <div className='d-flex justify-content-center'>
 
-                  </div>
+                  <button className='btn btn-primary' onClick={downloadFile}>Descargar (.txt)</button>
 
-                <textarea className='form-control mb-3' rows={27} disabled value={formato}></textarea>
+                </div>
 
               </div>
 

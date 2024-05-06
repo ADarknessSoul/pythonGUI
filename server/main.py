@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file
 import pickle
 import datetime
 import os
@@ -95,6 +95,9 @@ def get_combined_format():
                     }
                 )
 
+@app.route('/api/getFile', methods=['GET'])
+def get_file():
+    return send_file("documents\\formato.txt", as_attachment=True)
 
 @app.route('/api/postMethod', methods=['POST'])
 def add_user():
