@@ -48,6 +48,11 @@ export const CrearArchivo = () => {
 
     }
 
+    const handleDate = (date) => {
+        const formattedDate = new Date(date).toLocaleDateString('en-GB');
+        setFechaNac(formattedDate);
+    }
+
   return (
     
     <>
@@ -69,7 +74,7 @@ export const CrearArchivo = () => {
                     <GridForm fieldName='Código postal' fieldType='number' fieldPlaceholder={"Ingresa tu código postal"} handleChange={setCodigoPost}/>
                     <GridForm fieldName='Teléfono' fieldType='tel' fieldPlaceholder={"Ingresa tu teléfono"} handleChange={setTel}/>
                     <GridForm fieldName='Correo electrónico' fieldType='email' fieldPlaceholder={"Ingresa tu email"} handleChange={setEmail}/>
-                    <GridForm fieldName='Fecha de nacimiento' fieldType='date' fieldPlaceholder={"Ingresa tu fecha de nacimiento"} handleChange={setFechaNac}/>
+                    <GridForm fieldName='Fecha de nacimiento' fieldType='date' fieldPlaceholder={"Ingresa tu fecha de nacimiento"} handleChange={handleDate}/>
                 </div>
 
                 <div className='d-flex justify-content-center'>
