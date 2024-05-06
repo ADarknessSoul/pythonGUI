@@ -31,9 +31,9 @@ def calcularEdad(data):
     return edad
 
 def createFile(users):
-    global contador 
-    contador += 1
-    dir = f"server\\documents\\pickles\\data{contador}.pkl"
+    currentNumber = count_files_in_folder("server/documents/pickles")
+    currentNumber += 1
+    dir = f"server\\documents\\pickles\\data{currentNumber}.pkl"
     with open(dir, "ab") as file:
         pickle.dump(users, file)
     file.close()
@@ -121,6 +121,14 @@ def add_user():
 
     print(data)
     return jsonify({"message": "Data received successfully"})
+
+@app.route('/api/postDeleteMethod', methods=['POST'])
+def delete_user():
+    data = request.json
+    usuarioActual = data.get("usuarioActual")
+    dir = f"server\\documents\\pickles\\data{usuarioActual}.pkl"
+    os.remove(dir)
+    return jsonify({"message": "Data deleted successfully"})
 
 
 if __name__ == '__main__':

@@ -7,11 +7,9 @@ import axios from 'axios';
 
 export const PythonGUI = () => {
 
-    const [count, setCount] = useState(0);
     const [data, setData] = useState([]);
     const [numberOfPickles, setNumberOfPickles] = useState(0);
     const [formato, setFormato] = useState([]);
-    const [option, setOption] = useState(1);
     const [usuarioActual, setUsuarioActual] = useState(1);
   
     const fetchAPI = async () => {
@@ -39,6 +37,21 @@ export const PythonGUI = () => {
       setFormato(response.data.texto);
     }
 
+    const handleDelete = async () => {
+
+      const numeroUsuario = {
+
+        usuarioActual
+
+      }
+
+      axios.post("http://localhost:8080/api/postDeleteMethod", numeroUsuario).then((response) => {
+        console.log(response);
+        fetchNumberOfFiles();
+        setUsuarioActual(1);
+      });
+    }
+
     const handleAdd = () => {
       if(usuarioActual === numberOfPickles || numberOfPickles === 0) return;
       setUsuarioActual(usuarioActual + 1);
@@ -57,24 +70,14 @@ export const PythonGUI = () => {
 
             <h1 className='h1 text-center'>Combinar correspondencia</h1>
 
-            <div className='d-flex justify-content-center mb-3 mt-3'>
+            <CrearArchivo/>
 
-              <button className='btn btn-primary rounded-0' onClick={() => setOption(0)}>Cargar archivo</button>
-              <button className='btn btn-secondary rounded-0' onClick={() => setOption(1)}>Crear archivo</button>
-
-            </div>
-
-            {
-
-              option === 1 ? <CrearArchivo /> : <CargarArchivo />
-
-            }
 
             <div className='row mt-3 border p-2 mb-3'> 
 
               <div className='col-6'>
 
-                <h2 className='h2 text-center' style={{marginBottom: 144}}>Formato plantilla</h2>
+                <h2 className='h2 text-center' style={{marginBottom: 190}}>Formato plantilla</h2>
                 <textarea className='form-control mb-3' rows={27} disabled value={data}></textarea>
 
               </div>
@@ -100,7 +103,7 @@ export const PythonGUI = () => {
 
                       <button className='btn btn-primary' onClick={handleMix}>Combinar correspondencia</button>
 
-                      <button className='btn btn-danger'>Borrar</button>
+                      <button className='btn btn-danger' onClick={handleDelete}>Borrar</button>
 
                     </div>
 
