@@ -1,0 +1,24 @@
+A quien corresponda,
+
+Es un placer dirigirme a usted en calidad de [cargo] de [empresa]. 
+
+Mi nombre es [nombre] [apellido1] [apellido2], 
+
+y me dirijo a usted con el propósito de solicitar su colaboración en el trabajo.
+
+Le contamos que nuestras oficinas ubicadas en [calle] [numeroExt] [numeroInt] #[codigoPostal]
+
+En la colonia [colonia], dentro de [municipio] - [estado] se encuentran disponibles para su cooperación.
+
+En relación a lo anterior, me gustaría solicitar su apoyo en la investigación.
+
+Agradecería que pudiera proporcionarme una respuesta a más tardar mañana.
+
+Aprovecho la oportunidad para enviarle un cordial saludo.
+
+Atentamente, [nombre]
+
+
+Teléfono: [telefono]
+Correo electrónico: [correoElectronico]
+Adjunto mi fecha de nacimiento porque sí: Fecha de nacimiento: [fechaNacimiento]
