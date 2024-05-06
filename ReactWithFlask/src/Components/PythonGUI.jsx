@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 import React from 'react'
-import { GridForm } from './GridForm.jsx'
-import { CargarArchivo } from './CargarArchivo.jsx';
 import { CrearArchivo } from './CrearArchivo.jsx';
 import axios from 'axios';
 

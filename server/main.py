@@ -125,6 +125,7 @@ def add_user():
 @app.route('/api/postDeleteMethod', methods=['POST'])
 def delete_user():
     data = request.json
+    print(data)
     usuarioActual = data.get("usuarioActual")
     dir = f"server\\documents\\pickles\\data{usuarioActual}.pkl"
     os.remove(dir)
