@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 //import 'bootstrap-css';
 import { PythonGUI } from './Components/PythonGUI.jsx';
+import './normalize.css';
 import './index.css';
 
 

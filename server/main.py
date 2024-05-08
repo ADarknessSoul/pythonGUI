@@ -18,6 +18,32 @@ def count_files_in_folder(folder_path):
     num_files = len(files)
     return num_files
 
+def createFormatFile(currentUser):
+    usuarioActual = currentUser
+    dir = f"server\\documents\\pickles\\data{usuarioActual}.pkl"
+    print(dir)
+    #Deserializar la lista de datos en un archivo con pickle
+    with open(dir, "rb") as file:
+        data = pickle.load(file)
+        #Leer el archivo formatoBackup.txt y reemplazar los valores de la lista de datos
+        with open("server\\documents\\formatoBackup.txt", "r", -1, "UTF-8") as file:
+            content = file.read()
+            #print(content)
+            for item in data:
+                content = content.replace(f"[{item[0]}]", str(item[1]))
+            
+            edad = calcularEdad(data)
+            # Agregar la edad al final de la variable content
+            content += f"\nEdad: {edad}"
+            file.close()
+
+            formato_file = f"server/documents/formato_{usuarioActual}.txt"
+            with open(formato_file, "w", -1, "UTF-8") as file:
+                file.write(content)
+            file.close()
+            
+            return f"formato_{usuarioActual}.txt"
+
 
 def calcularEdad(data):
     # Obtener la fecha de nacimiento de la lista de datos
@@ -99,7 +125,23 @@ def get_combined_format():
 
 @app.route('/api/getFile', methods=['GET'])
 def get_file():
-    return send_file("documents\\formato.txt", as_attachment=True)
+    formato_file = createFormatFile(request.args.get("usuarioActual"))
+    return send_file(f"documents\\{formato_file}", as_attachment=True)
+
+@app.route('/api/getUser', methods=['GET'])
+def retrieve_users():
+    num = request.args.get("num")
+    dir = f"server/documents/pickles/data{num}.pkl"
+    with open(dir, "rb") as file:
+        users = pickle.load(file)
+
+    # Transform the data format from [['key', 'value']] to {'key': value}
+    transformed_data = {}
+    for item in users:
+        transformed_data[item[0]] = item[1]
+
+    return jsonify(transformed_data)
+
 
 @app.route('/api/postMethod', methods=['POST'])
 def add_user():
@@ -127,37 +169,55 @@ def add_user():
     print(data)
     return jsonify({"message": "Data received successfully"})
 
+@app.route('/api/postModify', methods=['POST'])
+def modifyUserValue():
+    data = request.json
+    campo = data.get("campo")
+    valor = data.get("valor")
+    num = data.get("num")
+    dir = f"server/documents/pickles/data{num}.pkl"
+    with open(dir, "rb") as file:
+        users = pickle.load(file)
+    for item in users:
+        if item[0] == campo:
+            item[1] = valor
+            break
+    with open(dir, "wb") as file:
+        pickle.dump(users, file)
+    return jsonify({"message": "Value modified successfully"})
+
 @app.route('/api/getDocx', methods=['GET'])
 def get_docx():
+
+    formato_file = createFormatFile(request.args.get("usuarioActual"))
     # Read the content of formato.txt
-    with open("server/documents/formato.txt", "r", -1, "UTF-8") as file:
+    with open(f"server/documents/{formato_file}", "r", -1, "UTF-8") as file:
         content = file.read()
     # Create a new Word document
     doc = Document()
     # Add the content to the document
     doc.add_paragraph(content)
     # Save the document as .docx
-    doc.save("server/documents/formato.docx")
+    doc.save(f"server/documents/formato_{request.args.get("usuarioActual")}.docx")
     # Return the .docx file as an attachment
-    return send_file("documents/formato.docx", as_attachment=True)
+    return send_file(f"documents/formato_{request.args.get("usuarioActual")}.docx", as_attachment=True)
 
 @app.route('/api/getPDF', methods=['GET'])
 def get_pdf():
+
+    formato_file = createFormatFile(request.args.get("usuarioActual"))
     # Read the content of formato.txt
-    with open("server/documents/formato.txt", "r", -1, "UTF-8") as file:
+    with open(f"server/documents/{formato_file}", "r", -1, "UTF-8") as file:
         content = file.read()
     # Create a new PDF document
     pdf = FPDF()
-    # Add a page to the document
     pdf.add_page()
-    # Set the font and size
     pdf.set_font("Arial", size=12)
-    # Add the content to the document
     pdf.multi_cell(0, 10, content)
     # Save the document as .pdf
-    pdf.output("server/documents/formato.pdf")
+    pdf.output(f"server/documents/formato_{request.args.get('usuarioActual')}.pdf")
     # Return the .pdf file as an attachment
-    return send_file("documents/formato.pdf", as_attachment=True)
+    return send_file(f"documents/formato_{request.args.get('usuarioActual')}.pdf", as_attachment=True)
 
 @app.route('/api/postDeleteMethod', methods=['POST'])
 def delete_user():

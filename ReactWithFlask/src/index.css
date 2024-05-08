@@ -1,3 +1,11 @@
+html {
+    box-sizing: border-box;
+  }
+
+*, *:before, *:after { /*Arregla el padding para que no agregue más tamaño al bloque*/
+  box-sizing: inherit;
+}
+
 textarea {
     resize: none;
 }
